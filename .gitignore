@@ -5,6 +5,7 @@
 ### C++ ###
 # Prerequisites
 *.d
+build/
 
 # Compiled Object files
 *.slo
@@ -96,6 +97,9 @@ $RECYCLE.BIN/
 *.msix
 *.msm
 *.msp
+
+# Text files
+*.csv
 
 # Windows shortcuts
 *.lnk

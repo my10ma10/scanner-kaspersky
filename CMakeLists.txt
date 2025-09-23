@@ -13,6 +13,7 @@ add_executable(scanner
     src/md5.cpp
     src/logger.cpp
     src/csv_parser.cpp
+    src/utility.cpp
 )
 target_include_directories(scanner PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 

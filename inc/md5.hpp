@@ -6,7 +6,7 @@
 
 #include <openssl/md5.h>
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 4096
 
 class MD5Calculator {
     MD5_CTX md5;
@@ -15,14 +15,15 @@ class MD5Calculator {
     std::vector<char> buf;
 
     std::vector<unsigned char> fileHash;
+    unsigned int readErrorsCounter;
 
-public:
-    MD5Calculator(const std::string& filename);
-    
-    std::string calculate();
-
-    void readFile();
     void format();
+    void readFile(const std::string& filepath);
+public:
+    MD5Calculator();
+    
+    std::string calculate(const std::string& filepath);
 
+    unsigned int getReadErrorsCount() const;
     std::string getHash() const;
 };

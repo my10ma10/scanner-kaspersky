@@ -4,11 +4,11 @@
 namespace fs = std::filesystem;
 
 class Travelsal {
-    fs::path _path;
+    fs::path path;
 
 public:
-    Travelsal() : _path(fs::current_path()) {}
-    Travelsal(const fs::path& path) : _path(path) {}
+    Travelsal();
+    Travelsal(const fs::path& p);
 
     void operator()() const;
 };

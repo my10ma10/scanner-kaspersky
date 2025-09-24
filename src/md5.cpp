@@ -1,4 +1,5 @@
 #include "md5.hpp"
+#include <iostream>
 
 MD5Calculator::MD5Calculator() {
     readErrorsCounter = 0;
@@ -22,13 +23,15 @@ void MD5Calculator::readFile(const std::string& filepath) {
     file.open(filepath, std::ios::binary);
     if (!file.is_open()) {
         ++readErrorsCounter;
-        throw std::runtime_error("Cannot open a file!");
+        std::cout << "Ошибка чтения " << filepath << std::endl;
+        return;
     }
-    
-    while (file.read(buf.data(), buf.size()) || file.gcount() > 0) {
-        MD5_Update(&md5, buf.data(), file.gcount());
+    else {
+        std::cout << "Считан файл " << filepath << std::endl;
+        while (file.read(buf.data(), buf.size()) || file.gcount() > 0) {
+            MD5_Update(&md5, buf.data(), file.gcount());
+        }
     }
-
     MD5_Final(fileHash.data(), &md5);
 }
 

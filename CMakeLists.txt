@@ -15,6 +15,7 @@ add_executable(scanner
     src/csv_parser.cpp
     src/utility.cpp
     src/timer.cpp
+    src/thread_pool.cpp
 )
 target_include_directories(scanner PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 

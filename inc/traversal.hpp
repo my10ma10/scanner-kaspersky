@@ -8,7 +8,6 @@
 namespace fs = std::filesystem;
 
 class Traversal {
-
     fs::path path;
     unsigned int processedCounter;
 

@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <optional>
 
+
 namespace fs = std::filesystem;
 
 template <typename T>
@@ -17,17 +18,21 @@ class ThreadSafeQueue {
 public:
     explicit ThreadSafeQueue() = default;
 
-    void push(T value);
+    template <typename U>
+    void push(U&& value);
+    
     std::optional<T> pop();
 
     void allAddedNotifiation();
+
+    const std::queue<T>& getOriginQueue() const;
 };
 
-template <typename T>
-void ThreadSafeQueue<T>::push(T value) {
+template <typename T> template <typename U>
+void ThreadSafeQueue<T>::push(U&& value) {
     {
         std::scoped_lock lock(mtx);
-        queue.push(value);
+        queue.push(std::forward<U>(value));
     }
     cv.notify_one();
 }
@@ -36,7 +41,9 @@ template <typename T>
 std::optional<T> ThreadSafeQueue<T>::pop() {
     std::unique_lock lock(mtx);
 
-    cv.wait(lock, [&] {return queue.empty() || all_files_added;});
+    cv.wait(lock, [&] () {
+        return queue.empty() || all_files_added;
+    });
 
     if (all_files_added) return std::nullopt;
 
@@ -53,4 +60,9 @@ void ThreadSafeQueue<T>::allAddedNotifiation() {
         all_files_added = true;
     }
     cv.notify_all();
+}
+
+template <typename T>
+const std::queue<T>& ThreadSafeQueue<T>::getOriginQueue() const {
+    return queue;
 }

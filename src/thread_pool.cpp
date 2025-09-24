@@ -1,15 +1,16 @@
 #include "thread_pool.hpp"
 
-ThreadPool::ThreadPool(unsigned int threads_number) {
+ThreadPool::ThreadPool() : ThreadPool(0) {}
+
+ThreadPool::ThreadPool(unsigned int th_n)
+    : threads_number(th_n), is_running(true)
+{
     for (size_t i = 0; i < threads_number; ++i) {
         threads.emplace_back([this] () {
             while (is_running) {
                 auto task = tasks.pop();
                 if (!task) {
-                    if (is_running) {
-                        break;
-                    }
-                    continue;
+                    break;
                 }
                 (*task)();
             }
@@ -20,13 +21,23 @@ ThreadPool::ThreadPool(unsigned int threads_number) {
 ThreadPool::~ThreadPool() {
     if (is_running) {
         is_running = false;
-        for (auto& t : threads) {
-            if (t.joinable()) t.join();
-        }
+        
+        joinAll();
     }
 }
 
-template <typename Func>
-void ThreadPool::enqueueTask(Func&& func) {
-    tasks.push(std::function<void()>(std::forward<Func>(func)))
+void ThreadPool::joinAll() {
+    for (auto& t : threads) {
+        if (t.joinable()) t.join();
+    }
+}
+
+void ThreadPool::shutdown() {
+    if (is_running) is_running = false;
+    tasks.allAddedNotifiation(); // разбудит все потоки
+}
+
+unsigned int ThreadPool::getThreadsNumber() const
+{
+    return threads_number;
 }

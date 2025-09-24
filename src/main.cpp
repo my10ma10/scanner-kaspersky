@@ -6,17 +6,21 @@ int main(int argc, char** argv) {
     //     std::cout << "Not enough arguments! Expected:\n\
     //         scanner.exe --base [hash-base] --log [log-file] --path [scanning-path]";
     // }
-
-    Utility utility("../", "../base.csv", "../logfile.log");
-    utility.run();
-    utility.printReport();
-
+    try {
+        Utility utility("../", "../base.csv", "../logfile.log");
+        utility.run();
+        utility.printReport();
+    }
+    catch(std::exception ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    
     // Traversal t(fs::path("/mnt/c/Dev/Personal/cpp/Projects/kaspersky/scanner/src"));
     // t();
 
     // try {
-    //     MD5Calculator calc("/mnt/c/Dev/Personal/cpp/Projects/kaspersky/scanner/base.csv");
-    //     std::string hash = calc.calculate();
+    //     MD5Calculator calc;
+    //     std::string hash = calc.calculate("../src/utility.cpp");
     //     std::cout << "MD5: " << hash << "\n";
     // } 
     // catch (const std::exception& e) {

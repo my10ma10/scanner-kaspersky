@@ -1,18 +1,20 @@
 #include "csv_parser.hpp"
-#include <iostream>
 
 CSVParser::CSVParser()
     : counter(0)
-    {}
+{}
+
+CSVParser::CSVParser(const std::string& basePath) 
+    : counter(0)
+{
+    openBaseFile(basePath);
+}
 
 std::optional<std::string> CSVParser::findMalicious(
-    const std::string& filename, 
-    const std::string& targetHash
-) {
+    const std::string& targetHash) 
+{
     std::string line;
     unsigned int counter = 0;
-
-    openFile();
 
     while (std::getline(file, line)) {
         ++counter;
@@ -25,8 +27,14 @@ std::optional<std::string> CSVParser::findMalicious(
     return std::nullopt;
 }
 
-void CSVParser::openFile() {
-    
+bool CSVParser::openBaseFile(const std::string& basePath) {
+    file.open(basePath);
+
+    if (file.is_open()) {
+        return true;
+    }
+    std::cout << "Ошибка при открытии файла " << basePath << std::endl; 
+    return false;
 }
 
 unsigned int CSVParser::getCoincidencesCount() const {

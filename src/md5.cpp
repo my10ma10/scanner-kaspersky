@@ -11,6 +11,11 @@ MD5Calculator::MD5Calculator() {
 }
 
 std::string MD5Calculator::calculate(const std::string& filepath) {
+    oss.str("");
+    oss.clear();
+
+    MD5_Init(&md5);
+
     readFile(filepath);
     format();
     
@@ -27,7 +32,6 @@ void MD5Calculator::readFile(const std::string& filepath) {
         return;
     }
     else {
-        std::cout << "Считан файл " << filepath << std::endl;
         while (file.read(buf.data(), buf.size()) || file.gcount() > 0) {
             MD5_Update(&md5, buf.data(), file.gcount());
         }

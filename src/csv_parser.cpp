@@ -7,22 +7,24 @@ CSVParser::CSVParser()
 CSVParser::CSVParser(const std::string& basePath) 
     : counter(0)
 {
+    init(basePath);
+}
+
+void CSVParser::init(const std::string &basePath) {
     openBaseFile(basePath);
+    fillBase();
 }
 
 std::optional<std::string> CSVParser::findMalicious(
     const std::string& targetHash) 
-{
-    std::string line;
-    unsigned int counter = 0;
-
-    while (std::getline(file, line)) {
+{    
+    auto it = hashBase.find(targetHash);
+    
+    if (it != hashBase.end()) {
         ++counter;
-
-        if (line.find(targetHash) != std::string::npos) {
-            return line;
-        }
+        return it->first;
     }
+
     if (file.is_open()) file.close();
     return std::nullopt;
 }
@@ -35,6 +37,14 @@ bool CSVParser::openBaseFile(const std::string& basePath) {
     }
     std::cout << "Ошибка при открытии файла " << basePath << std::endl; 
     return false;
+}
+
+void CSVParser::fillBase() {
+    std::string hash;
+    std::string msg;
+    while (std::getline(file, hash, ';') && std::getline(file, msg)) {
+        hashBase.insert(std::make_pair(hash, msg));
+    }
 }
 
 unsigned int CSVParser::getCoincidencesCount() const {

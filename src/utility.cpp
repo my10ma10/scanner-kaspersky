@@ -11,11 +11,11 @@ Utility::Utility(
     thPool(std::thread::hardware_concurrency())
 {
     timer.start();
-    parser.openBaseFile(base);
+    parser.init(base);
 }
 
 void Utility::run() {
-    std::cout << "Utility is running...\n";
+    std::cout << "Утилита в работе...\n";
     std::thread producer([this] () {
         traversal.run(queue);
         queue.allAddedNotifiation();
@@ -35,10 +35,10 @@ void Utility::createWorkers(unsigned int n) {
                 std::unique_lock lock(mtx);
 
                 std::string hash = md5Calc.calculate(*p);
-
-                lock.unlock();
                 
                 parser.findMalicious(hash);
+                lock.unlock();
+                
             }
         });
     }

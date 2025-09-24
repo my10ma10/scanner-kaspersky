@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     //         scanner.exe --base [hash-base] --log [log-file] --path [scanning-path]";
     // }
     try {
-        Utility utility("../", "../base.csv", "../logfile.log");
+        Utility utility("../../../", "../base.csv", "../logfile.log");
         utility.run();
         utility.printReport();
     }

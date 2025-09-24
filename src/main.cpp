@@ -8,11 +8,10 @@ int main(int argc, char** argv) {
     // }
 
     Utility utility("../", "../base.csv", "../logfile.log");
-    utility.execute();
+    utility.run();
     utility.printReport();
-    
 
-    // Travelsal t(fs::path("/mnt/c/Dev/Personal/cpp/Projects/kaspersky/scanner/src"));
+    // Traversal t(fs::path("/mnt/c/Dev/Personal/cpp/Projects/kaspersky/scanner/src"));
     // t();
 
     // try {

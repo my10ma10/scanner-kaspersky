@@ -36,7 +36,7 @@ template <typename T>
 std::optional<T> ThreadSafeQueue<T>::pop() {
     std::unique_lock lock(mtx);
 
-    cv.wait(lock, [&] {return queue.empty() || all_files_added});
+    cv.wait(lock, [&] {return queue.empty() || all_files_added;});
 
     if (all_files_added) return std::nullopt;
 

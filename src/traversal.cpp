@@ -1,18 +1,20 @@
 #include "traversal.hpp"
 
-Travelsal::Travelsal() 
-    : Travelsal(fs::current_path())  
+Traversal::Traversal() 
+    : Traversal(fs::current_path())  
     {}
 
-Travelsal::Travelsal(const fs::path& p) 
+Traversal::Traversal(const fs::path& p) 
     : path(p), processedCounter(0)
     {}
 
-void Travelsal::execute() {
+void Traversal::run(ThreadSafeQueue<fs::path>& queue) {
     try {
-        for (const fs::path& entry : fs::recursive_directory_iterator(path)) {
+        for (const auto& entry : fs::recursive_directory_iterator(path)) {
             ++processedCounter;
-            auto fileHash = md5Calc.calculate(entry.string());
+            if (entry.is_regular_file()) {
+                queue.push(entry.path());
+            }
         }
     }
     catch (const fs::filesystem_error& err) {
@@ -20,10 +22,6 @@ void Travelsal::execute() {
     }
 }
 
-unsigned int Travelsal::getProcessedCount() const {
+unsigned int Traversal::getProcessedCount() const {
     return processedCounter;
-}
-
-unsigned int Travelsal::getReadErrorsCount() const {
-    return md5Calc.getReadErrorsCount();
 }

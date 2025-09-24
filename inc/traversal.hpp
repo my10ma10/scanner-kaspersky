@@ -2,23 +2,22 @@
 #include <filesystem>
 #include <iostream>
 
-#include "md5.hpp"
+#include "threadsafe_queue.hpp"
+
 
 namespace fs = std::filesystem;
 
-class Travelsal {
-    MD5Calculator md5Calc;
+class Traversal {
 
     fs::path path;
     unsigned int processedCounter;
 
 public:
-    Travelsal();
-    Travelsal(const fs::path& p);
+    Traversal();
+    Traversal(const fs::path& p);
 
-    void execute();
+    void run(ThreadSafeQueue<fs::path>& queue);
 
     unsigned int getProcessedCount() const;
-    unsigned int getReadErrorsCount() const;
 };
 

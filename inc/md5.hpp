@@ -19,7 +19,6 @@ class MD5Calculator {
     unsigned int readErrorsCounter;
 
     void format();
-    void readFile(const std::string& filepath);
 public:
     MD5Calculator();
     

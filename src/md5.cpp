@@ -15,20 +15,11 @@ std::string MD5Calculator::calculate(const std::string& filepath) {
 
     MD5_Init(&md5);
 
-    readFile(filepath);
-    format();
-    
-    if (file.is_open()) file.close();
-    
-    return oss.str();
-}
-
-void MD5Calculator::readFile(const std::string& filepath) {
     file.open(filepath, std::ios::binary);
     if (!file.is_open()) {
         ++readErrorsCounter;
         std::cout << "Ошибка чтения " << filepath << std::endl;
-        return;
+        return "";
     }
     else {
         while (file.read(buf.data(), buf.size()) || file.gcount() > 0) {
@@ -36,7 +27,12 @@ void MD5Calculator::readFile(const std::string& filepath) {
         }
     }
     MD5_Final(fileHash.data(), &md5);
+    format();
+    file.close();
+    return oss.str();
 }
+
+// readFile больше не используется
 
 void MD5Calculator::format() {
     char b[3];

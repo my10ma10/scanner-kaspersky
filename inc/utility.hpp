@@ -9,8 +9,18 @@
 #include "threadsafe_queue.hpp"
 #include "thread_pool.hpp"
 
+#ifdef _WIN32
+    #include "windows.h"
+    #ifdef BUILD_MYLIB
+        #define MYLIB_API __declspec(dllexport)
+    #else
+        #define MYLIB_API __declspec(dllimport)
+    #endif
+#else
+  #define MYLIB_API
+#endif
 
-class Utility {
+class MYLIB_API Utility {
     Traversal traversal;
     CSVParser parser;
     MD5Calculator md5Calc;

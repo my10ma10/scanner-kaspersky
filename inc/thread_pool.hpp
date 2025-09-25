@@ -15,12 +15,22 @@ class ThreadPool {
 public:
     ThreadPool();
     ThreadPool(unsigned int th_n);
-    ~ThreadPool();
+    ~ThreadPool() {
+        if (is_running) {
+            is_running = false;
+            
+            joinAll();
+        }
+    }
 
     template <typename Func>
     void enqueueTask(Func&& func);
     
-    void joinAll();
+    void joinAll() {
+        for (auto& t : threads) {
+            if (t.joinable()) t.join();
+        }
+    }
     void shutdown();
 
     unsigned int getThreadsNumber() const;
@@ -30,3 +40,4 @@ template <typename Func>
 void ThreadPool::enqueueTask(Func&& func) {
     tasks.push(std::function<void()>(std::forward<Func>(func)));
 }
+

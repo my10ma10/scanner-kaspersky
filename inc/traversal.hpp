@@ -16,6 +16,7 @@ public:
     Traversal(const fs::path& p);
 
     void run(ThreadSafeQueue<fs::path>& queue);
+    bool isJunction(const std::filesystem::path& p);
 
     unsigned int getProcessedCount() const;
 };

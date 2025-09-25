@@ -18,26 +18,11 @@ ThreadPool::ThreadPool(unsigned int th_n)
     }
 }
 
-ThreadPool::~ThreadPool() {
-    if (is_running) {
-        is_running = false;
-        
-        joinAll();
-    }
-}
-
-void ThreadPool::joinAll() {
-    for (auto& t : threads) {
-        if (t.joinable()) t.join();
-    }
-}
-
 void ThreadPool::shutdown() {
     if (is_running) is_running = false;
-    tasks.allAddedNotifiation(); // разбудит все потоки
+    tasks.allAddedNotifiation();
 }
 
-unsigned int ThreadPool::getThreadsNumber() const
-{
+unsigned int ThreadPool::getThreadsNumber() const {
     return threads_number;
 }

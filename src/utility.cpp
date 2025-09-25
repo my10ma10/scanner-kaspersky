@@ -35,7 +35,7 @@ void Utility::createWorkers(unsigned int n) {
             while (auto p = queue.pop()) {
                 std::unique_lock lock(mtx);
 
-                std::string hash = md5Calc.calculate(*p);
+                std::string hash = md5Calc.calculate(p->string());
                 
                 parser.findMalicious(hash, p->string());
                 lock.unlock();

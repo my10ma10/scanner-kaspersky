@@ -16,12 +16,20 @@ void CSVParser::init(const std::string &basePath) {
 }
 
 std::optional<std::string> CSVParser::findMalicious(
-    const std::string& targetHash) 
+    const std::string& targetHash,
+    const std::string& filePath
+    ) 
 {    
-    auto it = hashBase.find(targetHash);
+    // first - хэш, second - вердикт 
+    auto it = hashBase.find(targetHash); 
     
     if (it != hashBase.end()) {
         ++counter;
+        Logger::getInstance().createLog(
+            filePath, 
+            it->first,
+            it->second
+        );
         return it->first;
     }
 

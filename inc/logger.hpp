@@ -1,14 +1,27 @@
 #pragma once
-#include <iostream>
 #include <fstream>
-
+#include <iostream>
+#include <memory>
+#include <mutex>
 
 class Logger {
-    std::ofstream file;
+    static std::ofstream file;
+    static std::unique_ptr<Logger> instance; 
+    static std::mutex mtx;
 
-    Logger(const std::string& filepath);
+    Logger() = default;
 public:
-    static Logger& getInstance(const std::string& filepath);
+    static Logger& getInstance();
 
-    bool createLog(const std::string& message);
+    static void setLogFile(const std::string& filepath);
+
+    bool createLog(
+        const std::string& filePath,
+        const std::string& hash,
+        const std::string& verdict
+    );
+    
+    Logger(const Logger& other) = delete;
+    Logger& operator=(const Logger& other) = delete;
 };
+

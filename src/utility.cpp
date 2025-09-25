@@ -12,6 +12,7 @@ Utility::Utility(
 {
     timer.start();
     parser.init(base);
+    Logger::setLogFile(logfile);
 }
 
 void Utility::run() {
@@ -36,7 +37,7 @@ void Utility::createWorkers(unsigned int n) {
 
                 std::string hash = md5Calc.calculate(*p);
                 
-                parser.findMalicious(hash);
+                parser.findMalicious(hash, p->string());
                 lock.unlock();
                 
             }

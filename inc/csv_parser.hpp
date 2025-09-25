@@ -5,6 +5,8 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "logger.hpp"
+
 class CSVParser {
     std::ifstream file;
     unsigned int counter;
@@ -17,7 +19,8 @@ public:
     void init(const std::string& basePath);
     
     std::optional<std::string> findMalicious(
-        const std::string& targetHash
+        const std::string& targetHash,
+        const std::string& filePath
     );
 
     bool openBaseFile(const std::string& basePath);

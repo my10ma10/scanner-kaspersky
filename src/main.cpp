@@ -1,45 +1,52 @@
-#include "utility.hpp"
 #include <iostream>
+#include <tuple>
+
+#include "utility.hpp"
+
+void argsChecking(int argc, char** argv);
+
+std::tuple<std::string, std::string, std::string> 
+flagsProcessing(int argc, char** argv);
+
 
 int main(int argc, char** argv) {
-    // if (argc < 8) {
-    //     std::cout << "Not enough arguments! Expected:\n\
-    //         scanner.exe --base [hash-base] --log [log-file] --path [scanning-path]";
-    // }
     try {
-        Utility utility("../../../", "../base.csv", "../logfile.log");
+        argsChecking(argc, argv);
+        auto [path, base, log] = flagsProcessing(argc, argv);
+        Utility utility(path, base, log);
         utility.run();
         utility.printReport();
     }
-    catch(std::exception ex) {
+    catch (std::exception& ex) {
         std::cout << ex.what() << std::endl;
     }
-    
-    // Traversal t(fs::path("/mnt/c/Dev/Personal/cpp/Projects/kaspersky/scanner/src"));
-    // t();
-
-    // try {
-    //     MD5Calculator calc;
-    //     std::string hash = calc.calculate("../src/utility.cpp");
-    //     std::cout << "MD5: " << hash << "\n";
-    // } 
-    // catch (const std::exception& e) {
-    //     std::cerr << e.what() << "\n";
-    // }
-
-    // Logger::getInstance("../lg.log").createLog("First log message!");
-
-    // std::string filepath = "../base.csv";
-
-    // CSVParser parser(filepath);
-    // auto res = parser.findMalicious("ac6204ffeb36d2320e52f1d551cfa370");
-
-    // if (!res) {
-    //     std::cout << "Not find the hash in the " << filepath << std::endl;
-    // }
-    // else {
-    //     std::cout << "Found line: " << *res << std::endl;
-    // }
-    
     return 0;
+}
+
+void argsChecking(int argc, char** argv) {
+    if (argc < 7) {
+        throw std::invalid_argument("Недостаточно аргументов! Ожидалось:\n\
+            scanner.exe --base [hash-base] --log [log-file] --path [scanning-path]");
+    }
+}
+
+std::tuple<std::string, std::string, std::string> 
+    flagsProcessing(int argc, char** argv) 
+{
+    std::tuple<std::string, std::string, std::string> res{"", "", ""};
+
+    for (size_t i = 1; i < argc; i += 2) {
+        std::string arg = argv[i];
+
+        if (arg == "--path") {
+            std::get<0>(res) = argv[i+1];
+        }
+        else if (arg == "--base") {
+            std::get<1>(res) = argv[i+1];
+        }
+        else if (arg == "--log") {
+            std::get<2>(res) = argv[i+1];
+        }
+    }
+    return res;
 }

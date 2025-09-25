@@ -7,12 +7,6 @@
 
 namespace fs = std::filesystem;
 
-static std::string makeTempPath(const std::string& suffix) {
-    auto p = fs::temp_directory_path();
-    auto uniq = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-    return (p / ("md5_test_" + uniq + "_" + suffix)).string();
-}
-
 constexpr const char* MD5_EMPTY  = "d41d8cd98f00b204e9800998ecf8427e";
 constexpr const char* MD5_ABC    = "900150983cd24fb0d6963f7d28e17f72";
 constexpr const char* MD5_HELLO  = "5d41402abc4b2a76b9719d911017c592";
@@ -28,6 +22,12 @@ protected:
             std::error_code ec;
             fs::remove(tmp_path, ec);
         }
+    }
+
+    std::string makeTempPath(const std::string& name) {
+        auto p = fs::temp_directory_path();
+        auto time = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
+        return (p / ("md5_test_" + time + "_" + name)).string();
     }
 
     void writeFile(const std::string& path, const std::string& content) {

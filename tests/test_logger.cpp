@@ -12,9 +12,9 @@ class LoggerTest : public ::testing::Test {
 protected:
     Logger logger;
     fs::path logFilePath;
-    
+
     void SetUp() override {
-        logFilePath = fs::temp_directory_path() / "test_log.txt";
+        logFilePath = fs::temp_directory_path() / "test_log.log";
     }
     
     void TearDown() override {
@@ -27,6 +27,7 @@ protected:
         std::ifstream in(logFilePath);
         std::vector<std::string> lines;
         std::string line;
+
         while (std::getline(in, line)) {
             lines.push_back(line);
         }

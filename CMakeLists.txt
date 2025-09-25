@@ -2,14 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(scanner)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest/googletest/include)
-
-add_executable(scanner 
-    src/traversal.cpp 
-    src/main.cpp
+set(LIB_SRC
+    src/traversal.cpp
     src/md5.cpp
     src/logger.cpp
     src/csv_parser.cpp
@@ -17,7 +11,18 @@ add_executable(scanner
     src/timer.cpp
     src/thread_pool.cpp
 )
-target_include_directories(scanner PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_library(scanner_lib SHARED 
+    ${LIB_SRC}
+)
+
+add_executable(scanner 
+    src/main.cpp
+)
+target_include_directories(scanner_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 find_package(OpenSSL REQUIRED)
-target_link_libraries(scanner PRIVATE OpenSSL::Crypto)
+target_link_libraries(scanner PRIVATE scanner_lib OpenSSL::Crypto)

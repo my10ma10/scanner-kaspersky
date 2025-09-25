@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
     try {
         argsChecking(argc, argv);
         auto [path, base, log] = flagsProcessing(argc, argv);
+        
         Utility utility(path, base, log);
         utility.run();
         utility.printReport();

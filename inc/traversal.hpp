@@ -4,7 +4,6 @@
 
 #include "threadsafe_queue.hpp"
 
-
 namespace fs = std::filesystem;
 
 class Traversal {

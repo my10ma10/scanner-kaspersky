@@ -11,8 +11,7 @@ Utility::Utility(
     thPool(std::thread::hardware_concurrency())
 {
     timer.start();
-    parser.init(base);
-    Logger::setLogFile(logfile);
+    parser.init(base, logfile);
 }
 
 void Utility::run() {

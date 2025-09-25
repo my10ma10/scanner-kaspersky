@@ -1,5 +1,4 @@
 #include "md5.hpp"
-#include <iostream>
 
 MD5Calculator::MD5Calculator() {
     readErrorsCounter = 0;

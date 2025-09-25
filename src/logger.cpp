@@ -1,17 +1,5 @@
 #include "logger.hpp"
 
-std::unique_ptr<Logger> Logger::instance = nullptr;
-std::ofstream Logger::file;
-std::mutex Logger::mtx;
-
-Logger& Logger::getInstance() {
-    std::scoped_lock lock(mtx);
-    if (!instance) {
-        instance.reset(new Logger());
-    }
-    return *instance;
-}
-
 void Logger::setLogFile(const std::string& filepath) {
     file.open(filepath, std::ios::app);
     if (!file.is_open()) {

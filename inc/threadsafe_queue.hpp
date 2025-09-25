@@ -46,7 +46,7 @@ std::optional<T> ThreadSafeQueue<T>::pop() {
         return !queue.empty() || all_files_added;
     });
 
-    if (all_files_added) return std::nullopt;
+    if (queue.empty() && all_files_added) return std::nullopt;
 
     T res = queue.front();
     queue.pop();

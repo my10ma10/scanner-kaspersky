@@ -12,11 +12,11 @@ class CSVParser {
     unsigned int counter;
     std::unordered_multimap<std::string, std::string> hashBase;
 
+    Logger logger;
 public:
     CSVParser();
-    CSVParser(const std::string& basePath);
-
-    void init(const std::string& basePath);
+    CSVParser(const std::string& basePath, const std::string& logFile);
+    void init(const std::string& basePath, const std::string& logFile);
     
     std::optional<std::string> findMalicious(
         const std::string& targetHash,

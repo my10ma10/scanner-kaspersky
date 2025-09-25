@@ -4,13 +4,14 @@ CSVParser::CSVParser()
     : counter(0)
 {}
 
-CSVParser::CSVParser(const std::string& basePath) 
+CSVParser::CSVParser(const std::string& basePath, const std::string& logFile) 
     : counter(0)
 {
-    init(basePath);
+    init(basePath, logFile);
 }
 
-void CSVParser::init(const std::string &basePath) {
+void CSVParser::init(const std::string& basePath, const std::string& logFile) {
+    logger.setLogFile(logFile);
     openBaseFile(basePath);
     fillBase();
 }
@@ -25,7 +26,7 @@ std::optional<std::string> CSVParser::findMalicious(
     
     if (it != hashBase.end()) {
         ++counter;
-        Logger::getInstance().createLog(
+        logger.createLog(
             filePath, 
             it->first,
             it->second

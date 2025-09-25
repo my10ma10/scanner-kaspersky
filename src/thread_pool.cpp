@@ -1,4 +1,5 @@
 #include "thread_pool.hpp"
+#include <iostream>
 
 ThreadPool::ThreadPool() : ThreadPool(0) {}
 

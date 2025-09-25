@@ -5,15 +5,13 @@
 #include <mutex>
 
 class Logger {
-    static std::ofstream file;
-    static std::unique_ptr<Logger> instance; 
-    static std::mutex mtx;
+    std::ofstream file;
+    std::unique_ptr<Logger> instance; 
+    std::mutex mtx;
 
-    Logger() = default;
 public:
-    static Logger& getInstance();
-
-    static void setLogFile(const std::string& filepath);
+    Logger() = default;
+    void setLogFile(const std::string& filepath);
 
     bool createLog(
         const std::string& filePath,

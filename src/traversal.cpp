@@ -15,8 +15,7 @@ void Traversal::run(ThreadSafeQueue<fs::path>& queue) {
         for (auto it = fs::recursive_directory_iterator(path, 
                 fs::directory_options::skip_permission_denied |
                  fs::directory_options::follow_directory_symlink
-            );
-            it != fs::recursive_directory_iterator(); ) 
+            ); it != fs::recursive_directory_iterator(); ) 
         {
             try {
                 if (isJunction(it->path())) {

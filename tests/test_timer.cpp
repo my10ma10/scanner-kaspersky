@@ -1,7 +1,4 @@
-#include <gtest/gtest.h>
-#include <thread>
-#include <chrono>
-
+#include "test_helper.hpp"
 #include "timer.hpp"
 
 using namespace std::chrono_literals;

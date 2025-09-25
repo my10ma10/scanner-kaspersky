@@ -1,13 +1,5 @@
-#include <gtest/gtest.h>
-#include <filesystem>
-#include <fstream>
-#include <string>
-#include <vector>
-
+#include "test_helper.hpp"
 #include "csv_parser.hpp"
-
-namespace fs = std::filesystem;
-
 
 class CSVParserTest : public ::testing::Test {
 protected:
@@ -24,30 +16,6 @@ protected:
         if (!logPath.empty() && fs::exists(logPath)) {
             fs::remove(logPath, ec);
         }
-    }
-
-    std::string makeTempPath(const std::string& name) {
-        auto p = fs::temp_directory_path();
-        auto time = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-        return (p / ("csv_test_" + time + "_" + name)).string();
-    }
-
-    void writeFile(const std::string& path, const std::string& content) {
-        std::ofstream out(path, std::ios::binary);
-
-        ASSERT_TRUE(out.is_open()) << "Невозможно создать файл: " << path;
-        out.write(content.data(), static_cast<std::streamsize>(content.size()));
-
-        out.close();
-    }
-
-    std::vector<std::string> readAllLines(const std::string& path) {
-        std::vector<std::string> lines;
-        std::ifstream in(path);
-        std::string line;
-
-        while (std::getline(in, line)) lines.push_back(line);
-        return lines;
     }
 };
 

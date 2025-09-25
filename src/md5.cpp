@@ -32,8 +32,6 @@ std::string MD5Calculator::calculate(const std::string& filepath) {
     return oss.str();
 }
 
-// readFile больше не используется
-
 void MD5Calculator::format() {
     char b[3];
     for (unsigned char c : fileHash) {

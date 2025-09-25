@@ -1,12 +1,5 @@
-#include <gtest/gtest.h>
-#include <iostream>
-#include <filesystem>
-#include <fstream>
-#include <thread>
-
+#include "test_helper.hpp"
 #include "logger.hpp"
-
-namespace fs = std::filesystem;
 
 class LoggerTest : public ::testing::Test {
 protected:
@@ -21,17 +14,6 @@ protected:
         if (fs::exists(logFilePath)) {
             fs::remove(logFilePath);
         }
-    }
-
-    std::vector<std::string> readAllLines() {
-        std::ifstream in(logFilePath);
-        std::vector<std::string> lines;
-        std::string line;
-
-        while (std::getline(in, line)) {
-            lines.push_back(line);
-        }
-        return lines;
     }
 };
 
@@ -63,7 +45,7 @@ TEST_F(LoggerTest, CreateLogWritesLine) {
 
     logger.createLog("file.txt", "somehash", "Verdict");
 
-    auto lines = readAllLines();
+    auto lines = readAllLines(logFilePath.string());
     ASSERT_EQ(lines.size(), 3);
     EXPECT_NE(lines[0].find("file.txt"), std::string::npos);
     EXPECT_NE(lines[1].find("somehash"), std::string::npos);
@@ -82,7 +64,7 @@ TEST_F(LoggerTest, MultipleWritesToFile) {
     EXPECT_TRUE(logger.createLog("file1.txt", "somehash1", "OK"));
     EXPECT_TRUE(logger.createLog("file2.txt", "somehash2", "BAD"));
 
-    auto lines = readAllLines();
+    auto lines = readAllLines(logFilePath.string());
     ASSERT_EQ(lines.size(), 6);
     EXPECT_NE(lines[0].find("file1.txt"), std::string::npos);
     EXPECT_NE(lines[3].find("file2.txt"), std::string::npos);
@@ -104,7 +86,7 @@ TEST_F(LoggerTest, CreateLogWithEmptyStrings) {
     logger.setLogFile(logFilePath.string());
 
     EXPECT_NO_THROW(logger.createLog("", "", ""));
-    auto lines = readAllLines();
+    auto lines = readAllLines(logFilePath.string());
     ASSERT_EQ(lines.size(), 3);
     EXPECT_FALSE(lines[0].empty());
     EXPECT_FALSE(lines[1].empty());
@@ -129,7 +111,7 @@ TEST_F(LoggerTest, MultiThreadedLogging) {
     t1.join();
     t2.join();
 
-    auto lines = readAllLines();
-    // Каждая запись — 3 строки, 2 потока по 10 записей = 60 строк
+    auto lines = readAllLines(logFilePath.string());
+    
     EXPECT_EQ(lines.size(), 60);
 }

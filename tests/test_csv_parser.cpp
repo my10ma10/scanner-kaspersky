@@ -3,8 +3,8 @@
 
 class CSVParserTest : public ::testing::Test {
 protected:
-    std::string basePath;
-    std::string logPath;
+    fs::path basePath;
+    fs::path logPath;
 
     void SetUp() override {}
 
@@ -23,7 +23,7 @@ TEST_F(CSVParserTest, OpenBaseNonExistentFile) {
     
     CSVParser parser;
 
-    EXPECT_FALSE(parser.openBaseFile(basePath));
+    EXPECT_FALSE(parser.openBaseFile(basePath.string()));
     EXPECT_EQ(parser.getCoincidencesCount(), 0u);
 }
 
@@ -34,10 +34,10 @@ TEST_F(CSVParserTest, FillBaseAndFindMalicious) {
     const std::string baseContent = 
         "hash1;BAD\n"
         "hash2;OK\n";
-    writeFile(basePath, baseContent);
+    writeFile(basePath.string(), baseContent);
 
     CSVParser parser;
-    parser.init(basePath, logPath);
+    parser.init(basePath.string(), logPath.string());
 
     auto res = parser.findMalicious("hash1", "some\\dir\\path\\file.txt");
     ASSERT_TRUE(res.has_value());
@@ -45,7 +45,7 @@ TEST_F(CSVParserTest, FillBaseAndFindMalicious) {
     EXPECT_EQ(parser.getCoincidencesCount(), 1u);
 
     // Проверка лога
-    auto lines = readAllLines(logPath);
+    auto lines = readAllLines(logPath.string());
     ASSERT_EQ(lines.size(), 3u);
 
     EXPECT_NE(lines[0].find("some\\dir\\path\\file.txt"), std::string::npos);
@@ -57,16 +57,16 @@ TEST_F(CSVParserTest, FindingNonExistentHash) {
     basePath = makeTempPath("base2.csv");
     logPath  = makeTempPath("log2.txt");
 
-    writeFile(basePath, "hsh1;VER\n");
+    writeFile(basePath.string(), "hsh1;VER\n");
 
     CSVParser parser;
-    parser.init(basePath, logPath);
+    parser.init(basePath.string(), logPath.string());
 
     auto res = parser.findMalicious("non-existent_hash", "file.bin");
     EXPECT_FALSE(res.has_value());
     EXPECT_EQ(parser.getCoincidencesCount(), 0u);
 
-    auto lines = readAllLines(logPath);
+    auto lines = readAllLines(logPath.string());
     EXPECT_TRUE(lines.empty());
 }
 
@@ -74,13 +74,13 @@ TEST_F(CSVParserTest, MultipleSameHash) {
     basePath = makeTempPath("base3.csv");
     logPath  = makeTempPath("log3.txt");
 
-    writeFile(basePath, 
+    writeFile(basePath.string(), 
         "hash;V1\n"
         "hash;V2\n"
     );
 
     CSVParser parser;
-    parser.init(basePath, logPath);
+    parser.init(basePath.string(), logPath.string());
 
     auto r1 = parser.findMalicious("hash", "f1");
     EXPECT_TRUE(r1.has_value());
@@ -90,7 +90,7 @@ TEST_F(CSVParserTest, MultipleSameHash) {
     EXPECT_TRUE(r2.has_value());
     EXPECT_EQ(parser.getCoincidencesCount(), 2u);
 
-    auto lines = readAllLines(logPath);
+    auto lines = readAllLines(logPath.string());
     ASSERT_EQ(lines.size(), 6u);
     EXPECT_NE(lines[0].find("f1"), std::string::npos);
     EXPECT_NE(lines[3].find("f2"), std::string::npos);
@@ -100,15 +100,15 @@ TEST_F(CSVParserTest, ConstructorInit) {
     basePath = makeTempPath("base4.csv");
     logPath  = makeTempPath("log4.txt");
 
-    writeFile(basePath, "hash1;BAD\nhash2;OK\n");
+    writeFile(basePath.string(), "hash1;BAD\nhash2;OK\n");
 
-    CSVParser parser(basePath, logPath);
+    CSVParser parser(basePath.string(), logPath.string());
 
     auto r = parser.findMalicious("hash2", "somefile");
     EXPECT_TRUE(r.has_value());
     EXPECT_EQ(parser.getCoincidencesCount(), 1u);
 
-    auto lines = readAllLines(logPath);
+    auto lines = readAllLines(logPath.string());
     ASSERT_EQ(lines.size(), 3u);
     EXPECT_NE(lines[0].find("somefile"), std::string::npos);
 }

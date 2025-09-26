@@ -4,10 +4,13 @@
 #include <sstream>
 #include <fstream>
 #include <cstdio>
+#include <filesystem>
 
 #include <openssl/md5.h>
 
 #define BUF_SIZE 4096
+
+namespace fs = std::filesystem;
 
 class MD5Calculator {
     MD5_CTX md5;
@@ -22,7 +25,7 @@ class MD5Calculator {
 public:
     MD5Calculator();
     
-    std::string calculate(const std::string& filepath);
+    std::string calculate(const fs::path& filepath);
 
     unsigned int getReadErrorsCount() const;
     std::string getHash() const;

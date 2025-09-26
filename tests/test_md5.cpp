@@ -7,7 +7,7 @@ constexpr const char* MD5_HELLO  = "5d41402abc4b2a76b9719d911017c592";
 
 class MD5Test : public ::testing::Test {
 protected:
-    std::string tmp_path;
+    fs::path tmp_path;
 
     void SetUp() override {}
 
@@ -20,7 +20,7 @@ protected:
 
 TEST_F(MD5Test, EmptyFileHash) {
     tmp_path = makeTempPath("empty.bin");
-    writeFile(tmp_path, ""); 
+    writeFile(tmp_path.string(), ""); 
 
     MD5Calculator calc;
     std::string hash = calc.calculate(tmp_path);
@@ -32,7 +32,7 @@ TEST_F(MD5Test, EmptyFileHash) {
 
 TEST_F(MD5Test, SmallContentHash) {
     tmp_path = makeTempPath("abc.bin");
-    writeFile(tmp_path, "abc");
+    writeFile(tmp_path.string(), "abc");
 
     MD5Calculator calc;
     std::string hash = calc.calculate(tmp_path);
@@ -53,7 +53,7 @@ TEST_F(MD5Test, NonExistentFile) {
 
 TEST_F(MD5Test, MultipleCalls) {
     tmp_path = makeTempPath("hello.bin");
-    writeFile(tmp_path, "hello");
+    writeFile(tmp_path.string(), "hello");
 
     MD5Calculator calc;
     std::string h1 = calc.calculate(tmp_path);
@@ -62,7 +62,7 @@ TEST_F(MD5Test, MultipleCalls) {
     EXPECT_EQ(calc.getReadErrorsCount(), 0u);
 
     
-    writeFile(tmp_path, "abc");
+    writeFile(tmp_path.string(), "abc");
     std::string h2 = calc.calculate(tmp_path);
     
     EXPECT_EQ(h2, MD5_ABC);
@@ -72,8 +72,8 @@ TEST_F(MD5Test, MultipleCalls) {
 
 TEST_F(MD5Test, MultipleNonExistentFiles) {
     MD5Calculator calc;
-    std::string p1 = makeTempPath("non-existent1.bin");
-    std::string p2 = makeTempPath("non-existent2.bin");
+    fs::path p1 = makeTempPath("non-existent1.bin");
+    fs::path p2 = makeTempPath("non-existent2.bin");
 
     EXPECT_EQ(calc.getReadErrorsCount(), 0u);
 

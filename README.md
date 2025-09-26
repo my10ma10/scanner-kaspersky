@@ -1,0 +1,23 @@
+# Утилита для сканирования файлов
+Автор - Соколов Никита
+
+## Системные требования
+Для работы утилиты требуется:
+- Компилятор MinGW начиная с 9.0 или MSVC
+- Система сборки (make)
+- CMake начиная с 3.15
+- OpenSSL 
+
+## Сборка
+С MinGW:
+```bash
+mkdir build && cd build
+cmake -G "Ninja" ..
+cmake --build .
+```
+
+## Запуск
+Пример:
+```bash
+scanner.exe --base base.csv --log file.log --path C:\\Dir"
+```

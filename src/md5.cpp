@@ -9,7 +9,7 @@ MD5Calculator::MD5Calculator() {
     MD5_Init(&md5);
 }
 
-std::string MD5Calculator::calculate(const std::string& filepath) {
+std::string MD5Calculator::calculate(const fs::path& filepath) {
     oss.str("");
     oss.clear();
 

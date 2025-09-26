@@ -210,7 +210,7 @@ TEST_F(UtilityTest, TimerPrintingTest) {
     
     Utility utility(test_dir.string(), (base_dir / "base.csv").string(), log_file.string());
     
-    // Добавляем небольшую задержку в обработку
+    // Добавляем задержку в обработку
     std::this_thread::sleep_for(100ms);
     
     utility.run();
@@ -229,6 +229,8 @@ TEST_F(UtilityTest, TimerPrintingTest) {
 }
 
 TEST_F(UtilityTest, SpecificFilesNamesTest) {
+    std::setlocale(LC_ALL, "RU");
+    
     createTestFile(test_dir / "file with spaces.txt", "content");
     createTestFile(test_dir / "кириллица.txt", "content");
     createTestFile(test_dir / "file-with-dashes.txt", "content");

@@ -9,10 +9,10 @@
 
 namespace fs = std::filesystem;
 
-inline std::string makeTempPath(const std::string& name) {
+inline fs::path makeTempPath(const std::string& name) {
     auto p = fs::temp_directory_path();
     auto time = std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-    return (p / ("test_" + time + "_" + name)).string();
+    return (p / ("test_" + time + "_" + name));
 }
 
 inline void writeFile(const std::string& path, const std::string& content) {

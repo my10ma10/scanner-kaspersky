@@ -11,10 +11,10 @@
 
 #ifdef _WIN32
     #include "windows.h"
-    #ifdef BUILD_MYLIB
+    #ifdef BUILD_LIB
         #define MYLIB_API __declspec(dllexport)
     #else
-        #define MYLIB_API __declspec(dllimport)
+        #define MYLIB_API
     #endif
 #else
   #define MYLIB_API

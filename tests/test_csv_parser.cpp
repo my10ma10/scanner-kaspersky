@@ -9,12 +9,11 @@ protected:
     void SetUp() override {}
 
     void TearDown() override {
-        std::error_code ec;
         if (!basePath.empty() && fs::exists(basePath)) {
-            fs::remove(basePath, ec);
+            fs::remove(basePath);
         }
         if (!logPath.empty() && fs::exists(logPath)) {
-            fs::remove(logPath, ec);
+            fs::remove(logPath);
         }
     }
 };
@@ -75,7 +74,6 @@ TEST_F(CSVParserTest, MultipleSameHash) {
     basePath = makeTempPath("base3.csv");
     logPath  = makeTempPath("log3.txt");
 
-    // Две записи с одинаковым хэшем, разными вердиктами
     writeFile(basePath, 
         "hash;V1\n"
         "hash;V2\n"

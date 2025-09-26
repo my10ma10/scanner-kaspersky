@@ -13,8 +13,7 @@ protected:
 
     void TearDown() override {
         if (!tmp_path.empty()) {
-            std::error_code ec;
-            fs::remove(tmp_path, ec);
+            fs::remove(tmp_path);
         }
     }
 };

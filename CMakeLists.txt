@@ -27,6 +27,7 @@ find_package(OpenSSL REQUIRED)
 add_library(scanner_lib SHARED ${LIB_SRC})
 target_include_directories(scanner_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 target_link_libraries(scanner_lib PUBLIC OpenSSL::Crypto)
+target_compile_definitions(scanner_lib PRIVATE BUILD_LIB)
 
 add_library(tests_lib STATIC ${LIB_SRC})
 target_include_directories(tests_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)

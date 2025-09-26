@@ -3,6 +3,7 @@ add_executable(run_tests
     test_md5.cpp
     test_csv_parser.cpp
     test_timer.cpp
+    test_traversal.cpp
 )
 target_link_libraries(run_tests 
     PRIVATE 

@@ -23,8 +23,11 @@ public:
     
     std::optional<T> pop();
 
+    bool empty() const;
+    size_t size() const;
+    
     void allAddedNotifiation();
-
+   
     const std::queue<T>& getOriginQueue() const;
 };
 
@@ -46,12 +49,26 @@ std::optional<T> ThreadSafeQueue<T>::pop() {
         return !queue.empty() || all_files_added;
     });
 
-    if (queue.empty() && all_files_added) return std::nullopt;
+    if (queue.empty() && all_files_added) {
+        return std::nullopt;
+    }
 
-    T res = queue.front();
+    T res = std::move(queue.front());
     queue.pop();
 
     return res;
+}
+
+template <typename T>
+bool ThreadSafeQueue<T>::empty() const {
+    std::scoped_lock lock(mtx);
+    return queue.empty();
+}
+
+template <typename T>
+size_t ThreadSafeQueue<T>::size() const {
+    std::scoped_lock lock(mtx);
+    return queue.size();
 }
 
 template <typename T>
@@ -65,5 +82,6 @@ void ThreadSafeQueue<T>::allAddedNotifiation() {
 
 template <typename T>
 const std::queue<T>& ThreadSafeQueue<T>::getOriginQueue() const {
+    std::scoped_lock lock(mtx);
     return queue;
 }

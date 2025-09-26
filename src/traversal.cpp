@@ -31,8 +31,8 @@ void Traversal::run(ThreadSafeQueue<fs::path>& queue) {
                     it.disable_recursion_pending();
                 }
 
-                ++processedCounter;
                 if (it->is_regular_file()) {
+                    ++processedCounter;
                     queue.push(it->path());
                 }
                 ++it;

@@ -6,11 +6,14 @@ add_executable(run_tests
     test_traversal.cpp
     test_threadsafe_queue.cpp
     test_thread_pool.cpp
+    test_utility.cpp
 )
+
 target_link_libraries(run_tests 
     PRIVATE 
     tests_lib
     gtest_main
+    gmock_main
 )
 
 include(GoogleTest)

@@ -1,5 +1,4 @@
 #include "thread_pool.hpp"
-#include <iostream>
 
 ThreadPool::ThreadPool() : ThreadPool(0) {}
 
@@ -8,7 +7,7 @@ ThreadPool::ThreadPool(unsigned int th_n)
 {
     for (size_t i = 0; i < threads_number; ++i) {
         threads.emplace_back([this] () {
-            while (is_running) {
+            while (true) {
                 auto task = tasks.pop();
                 if (!task) {
                     break;
@@ -17,11 +16,6 @@ ThreadPool::ThreadPool(unsigned int th_n)
             }
         });
     }
-}
-
-void ThreadPool::shutdown() {
-    if (is_running) is_running = false;
-    tasks.allAddedNotifiation();
 }
 
 unsigned int ThreadPool::getThreadsNumber() const {

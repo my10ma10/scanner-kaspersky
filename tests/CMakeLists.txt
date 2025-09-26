@@ -5,6 +5,7 @@ add_executable(run_tests
     test_timer.cpp
     test_traversal.cpp
     test_threadsafe_queue.cpp
+    test_thread_pool.cpp
 )
 target_link_libraries(run_tests 
     PRIVATE 

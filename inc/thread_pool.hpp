@@ -15,12 +15,17 @@ class ThreadPool {
 public:
     ThreadPool();
     ThreadPool(unsigned int th_n);
-    ~ThreadPool() {
+
+    void shutdown() {
         if (is_running) {
             is_running = false;
-            
-            joinAll();
         }
+        tasks.allAddedNotifiation();
+    }
+    
+    ~ThreadPool() {
+        shutdown();
+        joinAll();
     }
 
     template <typename Func>
@@ -31,7 +36,6 @@ public:
             if (t.joinable()) t.join();
         }
     }
-    void shutdown();
 
     unsigned int getThreadsNumber() const;
 };

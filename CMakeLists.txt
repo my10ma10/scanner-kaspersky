@@ -17,11 +17,12 @@ set(LIB_SRC
     src/thread_pool.cpp
 )
 
-
-set(OPENSSL_ROOT_DIR "C:/msys64/mingw64")
-set(OPENSSL_INCLUDE_DIR "C:/msys64/mingw64/include")
-set(OPENSSL_CRYPTO_LIBRARY "C:/msys64/mingw64/lib/libcrypto.dll.a")
-set(OPENSSL_SSL_LIBRARY "C:/msys64/mingw64/lib/libssl.dll.a")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(OPENSSL_ROOT_DIR "C:/msys64/mingw64")
+    set(OPENSSL_INCLUDE_DIR "C:/msys64/mingw64/include")
+    set(OPENSSL_CRYPTO_LIBRARY "C:/msys64/mingw64/lib/libcrypto.dll.a")
+    set(OPENSSL_SSL_LIBRARY "C:/msys64/mingw64/lib/libssl.dll.a")
+endif()
 find_package(OpenSSL REQUIRED)
 
 add_library(scanner_lib SHARED ${LIB_SRC})

@@ -1,6 +1,8 @@
 #include "traversal.hpp"
+
 #ifdef _WIN32
-#include <windows.h>
+    #include <windows.h>
+#endif // _WIN32
 
 Traversal::Traversal() 
     : Traversal(fs::current_path())  
@@ -66,5 +68,3 @@ bool Traversal::isJunction(const fs::path& p) {
 unsigned int Traversal::getProcessedCount() const {
     return processedCounter;
 }
-
-#endif // _WIN32

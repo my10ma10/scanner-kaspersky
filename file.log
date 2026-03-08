@@ -1,0 +1,12 @@
+Путь: .\.gitignore
+Хэш: 428eb9c7fab5a578085f85f22c63f4ba
+Вердикт: gitignore-file
+Путь: .\tests\test_main.cpp
+Хэш: 6e38f823f4bc14f92d78d9a87eec5ddb
+Вердикт: test_main.cpp-file
+Путь: ../../kaspersky\scanner\.gitignore
+Хэш: 428eb9c7fab5a578085f85f22c63f4ba
+Вердикт: gitignore-file
+Путь: ../../kaspersky\scanner\tests\test_main.cpp
+Хэш: 6e38f823f4bc14f92d78d9a87eec5ddb
+Вердикт: test_main.cpp-file
